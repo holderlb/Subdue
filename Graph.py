@@ -17,15 +17,15 @@ class Graph:
         self.vertices = {}
         self.edges = {}
     
-    def Compress(self,iteration,sub):
-        """Compress graph using given substructure at given iteration. Replaces each instance of sub with a new
-           vertex, and reconnects edges incident on the instance to the new vertex. Assume no overlap among instances."""
+    def Compress(self,iteration,pattern):
+        """Compress graph using given pattern at given iteration. Replaces each instance of pattern with a new
+           vertex, and reconnects edges incident on the instance to the new vertex. Assumes no overlap among instances."""
         instanceNum = 0
-        for instance in sub.instances:
+        for instance in pattern.instances:
             instanceNum += 1
-            # Create and add new vertex representing substructure instance
-            newVertexLabel = 'SUB-' + str(iteration)
-            newVertexId = 'SUB-' + str(iteration) + '-' + str(instanceNum)
+            # Create and add new vertex representing pattern instance
+            newVertexLabel = 'PATTERN-' + str(iteration)
+            newVertexId = 'PATTERN-' + str(iteration) + '-' + str(instanceNum)
             newVertex = Vertex(newVertexId)
             newVertex.timestamp = instance.max_timestamp()
             newVertex.add_attribute('label', newVertexLabel)

@@ -18,30 +18,53 @@ The options, input file format and output are described below.
 
 The following options are available in Subdue.
 
---beam
+--beam <n>
 
--- iterations
+Number of patterns to retain after each expansion of previous patterns; based on their compression value. Default is 4.
 
---limit
+--iterations <n>
 
---maxsize
+Number of iterations of Subdue's discovery process. If more than 1, Subdue compresses the graph with the best pattern and then runs again using the compressed graph. If 0, then Subdue runs until no more compression (i.e., set to |E|). Default is 1.
 
---minsize
+--limit <n>
 
---numsubs
+Number of patterns considered in each iteration of Subdue. A value of 0 implies |E|/2. Default is 0.
+
+--maxsize <n>
+
+Maximum size (#edges) of a pattern. A value of 0 implies |E|/2. Default is 0.
+
+--minsize <n>
+
+Minimum size (#edges) of a pattern. Default is 1.
+
+--numbest <n>
+
+Number of best patterns to report at end. Default is 3.
 
 --prune
 
---valuebased
-
---writecompressed
-
---writesub
-
---writeinsts
+If enabled, Subdue removes any pattern whose value is worse than its parent pattern. Disabled by default.
 
 --temporal
 
+If enabled, Subdue discovers temporal patterns, i.e., patterns whose instances are not only isomorphic, but also match in terms of their vertex and edge arrival order. Disabled by default (i.e., static patterns that ignore timestamps).
+
+--valuebased
+
+If enabled, then all patterns with the top *beam* values are retained during the discovery process. Disabled by default.
+
+--writecompressed
+
+If enabled, Subdue writes the compressed graph after each iteration *i* to the file *outputFileName-compressed-i.json*, where *outputFileName* is the same as the input file name, but with *.json* removed if present. Disabled by default.
+
+--writeinstances
+
+If enabled, Subdue writes instances of the best pattern at iteration i as one graph to file *outputFileName-instances-i.json*. Disabled by default.
+
+--writepattern
+
+If enabled, Subdue writes the best pattern at iteration i to file *outputFileName-pattern-i.json*. Disabled by default.
 
 ## Input File
 
