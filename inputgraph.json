@@ -1,0 +1,167 @@
+[
+  {"vertex": {
+     "id": "1",
+     "attributes": {"label": "v1"},
+     "timestamp": "1"}},
+  {"vertex": {
+     "id": "2",
+     "attributes": {"label": "v2"},
+     "timestamp": "1"}},
+  {"vertex": {
+     "id": "3",
+     "attributes": {"label": "v3"},
+     "timestamp": "1"}},
+  {"edge": {
+     "id": "1",
+     "source": "1",
+     "target": "2",
+     "attributes": {"label": "e12"},
+     "directed": "false",
+     "timestamp": "1"}},
+  {"edge": {
+     "id": "2",
+     "source": "1",
+     "target": "3",
+     "attributes": {"label": "e13"},
+     "directed": "false",
+     "timestamp": "1"}},
+  {"vertex": {
+     "id": "4",
+     "attributes": {"label": "v1"},
+     "timestamp": "2"}},
+  {"vertex": {
+     "id": "5",
+     "attributes": {"label": "v2"},
+     "timestamp": "2"}},
+  {"vertex": {
+     "id": "6",
+     "attributes": {"label": "v3"},
+     "timestamp": "2"}},
+  {"edge": {
+     "id": "4",
+     "source": "4",
+     "target": "5",
+     "attributes": {"label": "e12"},
+     "directed": "false",
+     "timestamp": "2"}},
+  {"edge": {
+     "id": "5",
+     "source": "4",
+     "target": "6",
+     "attributes": {"label": "e13"},
+     "directed": "false",
+     "timestamp": "2"}},
+  {"vertex": {
+     "id": "7",
+     "attributes": {"label": "v1"},
+     "timestamp": "4"}},
+  {"vertex": {
+     "id": "8",
+     "attributes": {"label": "v2"},
+     "timestamp": "4"}},
+  {"vertex": {
+     "id": "9",
+     "attributes": {"label": "v3"},
+     "timestamp": "4"}},
+  {"edge": {
+     "id": "9",
+     "source": "7",
+     "target": "8",
+     "attributes": {"label": "e12"},
+     "directed": "false",
+     "timestamp": "4"}},
+  {"edge": {
+     "id": "10",
+     "source": "7",
+     "target": "9",
+     "attributes": {"label": "e13"},
+     "directed": "false",
+     "timestamp": "4"}},
+  {"vertex": {
+     "id": "10",
+     "attributes": {"label": "v1"},
+     "timestamp": "5"}},
+  {"vertex": {
+     "id": "11",
+     "attributes": {"label": "v2"},
+     "timestamp": "5"}},
+  {"vertex": {
+     "id": "12",
+     "attributes": {"label": "v3"},
+     "timestamp": "5"}},
+  {"edge": {
+     "id": "13",
+     "source": "10",
+     "target": "11",
+     "attributes": {"label": "e12"},
+     "directed": "false",
+     "timestamp": "5"}},
+  {"edge": {
+     "id": "14",
+     "source": "10",
+     "target": "12",
+     "attributes": {"label": "e13"},
+     "directed": "false",
+     "timestamp": "5"}},
+  {"edge": {
+     "id": "3",
+     "source": "2",
+     "target": "3",
+     "attributes": {"label": "e23"},
+     "directed": "false",
+     "timestamp": "7"}},
+  {"edge": {
+     "id": "6",
+     "source": "5",
+     "target": "6",
+     "attributes": {"label": "e23"},
+     "directed": "false",
+     "timestamp": "8"}},
+  {"vertex": {
+     "id": "13",
+     "attributes": {"label": "v1"},
+     "timestamp": "9"}},
+  {"vertex": {
+     "id": "14",
+     "attributes": {"label": "v2"},
+     "timestamp": "9"}},
+  {"vertex": {
+     "id": "15",
+     "attributes": {"label": "v3"},
+     "timestamp": "9"}},
+  {"edge": {
+     "id": "20",
+     "source": "13",
+     "target": "14",
+     "attributes": {"label": "e12"},
+     "directed": "false",
+     "timestamp": "9"}},
+  {"edge": {
+     "id": "21",
+     "source": "13",
+     "target": "15",
+     "attributes": {"label": "e13"},
+     "directed": "false",
+     "timestamp": "9"}},
+  {"edge": {
+     "id": "11",
+     "source": "8",
+     "target": "9",
+     "attributes": {"label": "e23"},
+     "directed": "false",
+     "timestamp": "11"}},
+  {"edge": {
+     "id": "15",
+     "source": "11",
+     "target": "12",
+     "attributes": {"label": "e23"},
+     "directed": "false",
+     "timestamp": "12"}},
+  {"edge": {
+     "id": "22",
+     "source": "14",
+     "target": "15",
+     "attributes": {"label": "e23"},
+     "directed": "false",
+     "timestamp": "16"}}
+]

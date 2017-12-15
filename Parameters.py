@@ -20,10 +20,10 @@ class Parameters:
         self.numBestSubs = 3          # Number of best substructures to report at end; default is 3.
         self.prune = False            # Remove any substructures that are worse than their parent.
         self.valueBased = False       # Retain all substructures with the top beam best values.
-        self.writeCompressed = False  # Write compressed graph after iteration i to file inputFileName-cmp-i.json
-        self.writeSub = False         # Write best substructure at iteration i to file inputFileName-sub-i.json
-        self.writeInsts = False       # Write instances of best substructure at iteration i as one graph to file inputFileName-insts-i.json
-        self.temporal = False         # Discovery static (False) or temporal (True) patterns
+        self.writeCompressed = False  # Write compressed graph after iteration i to file outputFileName-cmp-i.json
+        self.writeSub = False         # Write best substructure at iteration i to file outputFileName-sub-i.json
+        self.writeInsts = False       # Write instances of best substructure at iteration i as one graph to file outputFileName-insts-i.json
+        self.temporal = False         # Discover static (False) or temporal (True) patterns
     
     def set_parameters (self, args):
         """Set parameters according to given command-line args list."""

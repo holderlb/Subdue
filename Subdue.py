@@ -136,35 +136,19 @@ def Subdue(parameters, graph):
     endTime = time.time()
     print "SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds"
     
-def SubdueTest(parameters, graph):
-    print "Testing"
-    print "  Test #1 (match input graph to itself):",
-    if (Graph.Match(graph,graph)):
-        print "PASS"
-    else:
-        print "FAIL"
-    print "  Test #2 (check non-isomorphic graphs):",
-    g1 = ReadGraph("testgraph1.json")
-    g2 = ReadGraph("testgraph2.json")
-    if (Graph.Match(g1,g2)):
-        print "FAIL"
-    else:
-        print "PASS"
-    
 def main():
     print "Subdue v1.0 (python)"
     parameters = Parameters.Parameters()
     parameters.set_parameters(sys.argv)
     graph = ReadGraph(parameters.inputFileName)
-    outputFileName = parameters.outputFileName + ".dot"
-    graph.write_to_dot(outputFileName)
+    #outputFileName = parameters.outputFileName + ".dot"
+    #graph.write_to_dot(outputFileName)
     if (parameters.limit == 0):
         parameters.limit = len(graph.edges) / 2
     if (parameters.maxSize == 0):
         parameters.maxSize = len(graph.edges) / 2
     if (parameters.iterations == 0):
         parameters.iterations = len(graph.edges)
-    #SubdueTest(parameters, graph)
     Subdue(parameters, graph)
 
 if __name__ == "__main__":
