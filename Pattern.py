@@ -1,4 +1,4 @@
-# Substructure.py
+# Pattern.py
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
@@ -6,7 +6,7 @@
 
 import Graph
 
-class Substructure:
+class Pattern:
     
     def __init__(self):
         self.definition = None # Graph
@@ -14,12 +14,12 @@ class Substructure:
         self.value = 0.0
     
     def evaluate (self, graph):
-        """Compute value of using given substructure to compress given graph, where 0 means no compression, and 1 means perfect compression."""
-        # (instances-1) because we would also need to retain the definition of the substructure for compression
+        """Compute value of using given pattern to compress given graph, where 0 means no compression, and 1 means perfect compression."""
+        # (instances-1) because we would also need to retain the definition of the pattern for compression
         self.value = float(((len(self.instances) - 1) * len(self.definition.edges)) / float(len(graph.edges))) 
     
-    def print_substructure(self, tab):
-        print tab + "Substructure (value=" + str(self.value) + ", instances=" + str(len(self.instances)) + "):"
+    def print_pattern(self, tab):
+        print tab + "Pattern (value=" + str(self.value) + ", instances=" + str(len(self.instances)) + "):"
         self.definition.print_graph(tab+'  ')
         # May want to make instance printing optional
         instanceNum = 1
@@ -28,7 +28,7 @@ class Substructure:
             instanceNum += 1
     
     def write_instances_to_file(self, outputFileName):
-        """Write instances of substructure to given file name in JSON format."""
+        """Write instances of pattern to given file name in JSON format."""
         outputFile = open(outputFileName, 'w')
         outputFile.write('[\n')
         firstOne = True
@@ -84,7 +84,7 @@ class Instance:
         return maxTimeStamp
         
 
-# ----- Substructure and Instance Creation
+# ----- Pattern and Instance Creation
  
 def CreateInstanceFromEdge(edge):
     i = Instance()
@@ -92,24 +92,24 @@ def CreateInstanceFromEdge(edge):
     i.vertices = [edge.source, edge.target]
     return i
 
-def CreateSubFromInstances(definition, instances):
-    """Create substructure from given definition graph and its instances. Note: Substructure not evaluated here."""
-    sub = Substructure()
-    sub.definition = definition
-    sub.instances = instances
-    return sub
+def CreatePatternFromInstances(definition, instances):
+    """Create pattern from given definition graph and its instances. Note: Pattern not evaluated here."""
+    pattern = Pattern()
+    pattern.definition = definition
+    pattern.instances = instances
+    return pattern
 
-# ----- Substructure Extension
+# ----- Pattern Extension
 
-def ExtendSub (sub, temporal = False):
-    """Return list of substructures created by extending each instance of the given substructure by one edge in all possible ways,
-       and then collecting matching extended instances together into new substructures."""
+def ExtendPattern (pattern, temporal = False):
+    """Return list of patterns created by extending each instance of the given pattern by one edge in all possible ways,
+       and then collecting matching extended instances together into new patterns."""
     extendedInstances = []
-    for instance in sub.instances:
+    for instance in pattern.instances:
         newInstances = ExtendInstance(instance)
         for newInstance in newInstances:
             InsertNewInstance(extendedInstances, newInstance)
-    newSubs = []
+    newPatterns = []
     while extendedInstances:
         newInstance = extendedInstances.pop(0)
         newInstanceGraph = Graph.CreateGraphFromInstance(newInstance)
@@ -126,9 +126,9 @@ def ExtendSub (sub, temporal = False):
             else:
                 nonmatchingInstances.append(extendedInstance)
         extendedInstances = nonmatchingInstances
-        newSub = CreateSubFromInstances(newInstanceGraph, matchingInstances)
-        newSubs.append(newSub)
-    return newSubs
+        newPattern = CreatePatternFromInstances(newInstanceGraph, matchingInstances)
+        newPatterns.append(newPattern)
+    return newPatterns
 
 def ExtendInstance (instance):
     """Returns list of new instances created by extending the given instance by one new edge in all possible ways."""
@@ -192,36 +192,36 @@ def InstanceOverlap(instance1,instance2):
             return True
     return False
 
-# ----- Substructure List Operations
+# ----- Pattern List Operations
 
-def SubListInsert(newSub, subList, maxLength, valueBased):
-    """Insert newSub into subList. If newSub is isomorphic to an existing substructure on subList, then keep higher-valued substructure.
-       List is kept in decreasing order by substructure value. If valueBased=True, then maxLength represents the maximum number
-       of different-valued substructures on the list; otherwise, maxLength represents the maximum number of substructures on
-       the list. Assumes given subList already conforms to maximums."""
-    # Check if newSub unique (i.e., non-isomorphic or isomorphic but better-valued)
-    for sub in subList:
-        if (Graph.GraphMatch(sub.definition,newSub.definition)):
-            if (sub.value >= newSub.value):
-                return # newSub already on list with same or better value
+def PatternListInsert(newPattern, patternList, maxLength, valueBased):
+    """Insert newPattern into patternList. If newPattern is isomorphic to an existing pattern on patternList, then keep higher-valued
+       pattern. The list is kept in decreasing order by pattern value. If valueBased=True, then maxLength represents the maximum number
+       of different-valued patterns on the list; otherwise, maxLength represents the maximum number of patterns on the list.
+       Assumes given patternList already conforms to maximums."""
+    # Check if newPattern unique (i.e., non-isomorphic or isomorphic but better-valued)
+    for pattern in patternList:
+        if (Graph.GraphMatch(pattern.definition,newPattern.definition)):
+            if (pattern.value >= newPattern.value):
+                return # newPattern already on list with same or better value
             else:
-                # newSub isomorphic to existing sub, but better valued
-                subList.remove(sub)
+                # newpattern isomorphic to existing pattern, but better valued
+                patternList.remove(pattern)
                 break
-    # newSub unique, so insert in order by value
+    # newPattern unique, so insert in order by value
     insertAtIndex = 0
-    for sub in subList:
-        if newSub.value > sub.value:
+    for pattern in patternList:
+        if newPattern.value > pattern.value:
             break
         insertAtIndex += 1
-    subList.insert(insertAtIndex, newSub)
-    # check if subList needs to be trimmed
+    patternList.insert(insertAtIndex, newPattern)
+    # check if patternList needs to be trimmed
     if valueBased:
-        uniqueValues = UniqueValues(subList)
+        uniqueValues = UniqueValues(patternList)
         if len(uniqueValues) > maxLength:
             removeValue = uniqueValues[-1]
-            while (subList[-1].value == removeValue):
-                subList.pop(-1)
+            while (patternList[-1].value == removeValue):
+                patternList.pop(-1)
     else:
-        if len(subList) > maxLength:
-            subList.pop(-1)
+        if len(patternList) > maxLength:
+            patternList.pop(-1)
