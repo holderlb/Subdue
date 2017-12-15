@@ -8,7 +8,7 @@ Support: This material is based upon work supported by the National Science Foun
 
 ## Running Subdue
 
-You run Subdue using the following command-line format:
+Subdue is run using the following command-line format:
 
 `python Subdue.py [options] <inputfile>`
 
@@ -94,6 +94,7 @@ object with the following properties.
 
 ## Output
 
+Subdue outputs the top patterns according to their compression value along with their instances in the input graph. The file *output.txt* contains the output produced by Subdue on *inputgraph.json* using default options.
 
 ## Questions?
 
