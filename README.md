@@ -18,7 +18,7 @@ The options, input file format and output are described below.
 
 The following options are available in Subdue.
 
---beam <n>
+`--beam <n>`
 
 Number of patterns to retain after each expansion of previous patterns; based on their compression value. Default is 4.
 
