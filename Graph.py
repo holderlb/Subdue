@@ -73,14 +73,15 @@ class Graph:
             if ('vertex' in json_object):
                 vertexDict = json_object['vertex']
                 vertexId = vertexDict['id']
-                vertex = Vertex(vertexId)
-                if ('timestamp' in vertexDict):
-                    vertex.timestamp = int(vertexDict['timestamp'])
-                if ('attributes' in vertexDict):
-                    json_attrs = vertexDict['attributes']
-                    for key,value in json_attrs.iteritems():
-                        vertex.add_attribute(key, value)
-                self.vertices[vertexId] = vertex
+                if (vertexId not in self.vertices): # in case fused graph with duplicate vertices
+                    vertex = Vertex(vertexId)
+                    if ('timestamp' in vertexDict):
+                        vertex.timestamp = int(vertexDict['timestamp'])
+                    if ('attributes' in vertexDict):
+                        json_attrs = vertexDict['attributes']
+                        for key,value in json_attrs.iteritems():
+                            vertex.add_attribute(key, value)
+                    self.vertices[vertexId] = vertex
             if ('edge' in json_object):
                 edgeDict = json_object['edge']
                 edgeId = edgeDict['id']
@@ -184,7 +185,7 @@ class Vertex:
                 firstOne = False
             else:
                 outputFile.write(',')
-            outputFile.write('"' + key + '"="' + value + '"')
+            outputFile.write('"' + key + '": "' + value + '"')
         outputFile.write('},\n')
         outputFile.write('     "timestamp": "' + str(self.timestamp) + '"}}')
 
@@ -227,7 +228,7 @@ class Edge:
                 firstOne = False
             else:
                 outputFile.write(',')
-            outputFile.write('"' + key + '"="' + value + '"')
+            outputFile.write('"' + key + '": "' + value + '"')
         outputFile.write('},\n')
         if self.directed:
             outputFile.write('     "directed": "true",\n')

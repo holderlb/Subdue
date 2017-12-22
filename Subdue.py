@@ -34,6 +34,7 @@ def DiscoverPatterns(parameters, graph):
             pattern.print_pattern('  ')
     discoveredPatternList = []
     while ((patternCount < parameters.limit) and parentPatternList):
+        print str(parameters.limit - patternCount) + " patterns left"
         childPatternList = []
         # extend each pattern in parent list (***** todo: in parallel)
         while (parentPatternList):
