@@ -225,3 +225,11 @@ def PatternListInsert(newPattern, patternList, maxLength, valueBased):
     else:
         if len(patternList) > maxLength:
             patternList.pop(-1)
+
+def UniqueValues(patternList):
+    """Returns list of unique values of patterns in given pattern list, in same order"""
+    uniqueValues = []
+    for pattern in patternList:
+        if pattern.value not in uniqueValues:
+            uniqueValues.append(pattern.value)
+    return uniqueValues
