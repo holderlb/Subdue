@@ -71,6 +71,39 @@ def GetInitialPatterns(graph, temporal = False):
         edge1 = candidateEdges.pop(0)
         matchingEdges = [edge1]
         nonmatchingEdges = []
+        graph1 = Graph.CreateGraphFromEdge(edge1)
+        if temporal:
+            graph1.TemporalOrder()
+        for edge2 in candidateEdges:
+            graph2 = Graph.CreateGraphFromEdge(edge2)
+            if temporal:
+                graph2.TemporalOrder()
+            if Graph.GraphMatch(graph1,graph2):
+                matchingEdges.append(edge2)
+            else:
+                nonmatchingEdges.append(edge2)
+        if len(matchingEdges) > 1:
+            # Create initial pattern
+            pattern = Pattern.Pattern()
+            pattern.definition = Graph.CreateGraphFromEdge(matchingEdges[0])
+            if temporal:
+                pattern.definition.TemporalOrder()
+            pattern.instances = []
+            for edge in matchingEdges:
+                pattern.instances.append(Pattern.CreateInstanceFromEdge(edge))
+            pattern.evaluate(graph)
+            initialPatternList.append(pattern)
+        candidateEdges = nonmatchingEdges
+    return initialPatternList
+
+def GetInitialPatterns0(graph, temporal = False):
+    """Returns list of single-edge, evaluated patterns in given graph with more than one instance."""
+    initialPatternList = []
+    candidateEdges = graph.edges.values()
+    while candidateEdges:
+        edge1 = candidateEdges.pop(0)
+        matchingEdges = [edge1]
+        nonmatchingEdges = []
         for edge2 in candidateEdges:
             if ((edge1.directed == edge2.directed) and
                 (cmp(edge1.attributes, edge2.attributes) == 0) and
