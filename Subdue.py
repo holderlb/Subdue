@@ -96,36 +96,6 @@ def GetInitialPatterns(graph, temporal = False):
         candidateEdges = nonmatchingEdges
     return initialPatternList
 
-def GetInitialPatterns0(graph, temporal = False):
-    """Returns list of single-edge, evaluated patterns in given graph with more than one instance."""
-    initialPatternList = []
-    candidateEdges = graph.edges.values()
-    while candidateEdges:
-        edge1 = candidateEdges.pop(0)
-        matchingEdges = [edge1]
-        nonmatchingEdges = []
-        for edge2 in candidateEdges:
-            if ((edge1.directed == edge2.directed) and
-                (cmp(edge1.attributes, edge2.attributes) == 0) and
-                (cmp(edge1.source.attributes, edge2.source.attributes) == 0) and
-                (cmp(edge1.target.attributes, edge2.target.attributes) == 0)): # ignoring timestamps
-                matchingEdges.append(edge2)
-            else:
-                nonmatchingEdges.append(edge2)
-        if len(matchingEdges) > 1:
-            # Create initial pattern
-            pattern = Pattern.Pattern()
-            pattern.definition = Graph.CreateGraphFromEdge(matchingEdges[0])
-            if temporal:
-                pattern.definition.TemporalOrder()
-            pattern.instances = []
-            for edge in matchingEdges:
-                pattern.instances.append(Pattern.CreateInstanceFromEdge(edge))
-            pattern.evaluate(graph)
-            initialPatternList.append(pattern)
-        candidateEdges = nonmatchingEdges
-    return initialPatternList
-
 def Subdue(parameters, graph):
     """Top-level function for Subdue that discovers best pattern in graph.
        Optionally, Subdue can then compress the graph with the best pattern, and iterate."""
