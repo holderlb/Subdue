@@ -2,7 +2,7 @@
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
-# Copyright (c) 2017. Washington State University.
+# Copyright (c) 2017-2018. Washington State University.
 
 import Graph
 
@@ -44,8 +44,8 @@ class Pattern:
 class Instance:
     
     def __init__(self):
-        self.vertices = []
-        self.edges = []
+        self.vertices = set()
+        self.edges = set()
     
     def print_instance (self, instanceNum, tab=""):
         print(tab + "Instance " + str(instanceNum) + ":")
@@ -74,6 +74,11 @@ class Instance:
     
     def max_timestamp(self):
         """Returns the maximum timestamp over all vertices and edges in the instance."""
+        maxTimeStampVertex = max(self.vertices, key = lambda v: v.timestamp)
+        maxTimeStampEdge = max(self.edges, key = lambda e: e.timestamp)
+        return max(maxTimeStampVertex.timestamp, maxTimeStampEdge,timestamp)
+    
+    def max_timestamp_OLD(self):
         maxTimeStamp = 0
         for vertex in self.vertices:
             if (vertex.timestamp > maxTimeStamp):
@@ -85,8 +90,15 @@ class Instance:
         
 
 # ----- Pattern and Instance Creation
- 
+
 def CreateInstanceFromEdge(edge):
+    i = Instance()
+    i.edges.add(edge)
+    i.vertices.add(edge.source)
+    i.vertices.add(edge.target)
+    return i
+
+def CreateInstanceFromEdge_OLD(edge):
     i = Instance()
     i.edges = [edge]
     i.vertices = [edge.source, edge.target]
@@ -132,6 +144,15 @@ def ExtendPattern (pattern, temporal = False):
 
 def ExtendInstance (instance):
     """Returns list of new instances created by extending the given instance by one new edge in all possible ways."""
+    newInstances = []
+    unusedEdges = set([e for v in instance.vertices for e in v.edges]) - instance.edges
+    for edge in unusedEdges:
+        newInstance = ExtendInstanceByEdge(instance, edge)
+        newInstances.append(newInstance)
+    return newInstances
+
+def ExtendInstance_OLD (instance):
+    """Returns list of new instances created by extending the given instance by one new edge in all possible ways."""
     usedEdges = list(instance.edges)
     newInstances = []
     for vertex in instance.vertices:
@@ -143,7 +164,17 @@ def ExtendInstance (instance):
     return newInstances
 
 def ExtendInstanceByEdge(instance, edge):
-    """Create and return new instance built from given instance and adding given edge and vertices of edge if new"""
+    """Create and return new instance built from given instance and adding given edge and vertices of edge if new."""
+    newInstance = Instance()
+    newInstance.vertices = set(instance.vertices)
+    newInstance.edges = set(instance.edges)
+    newInstance.edges.add(edge)
+    newInstance.vertices.add(edge.source)
+    newInstance.vertices.add(edge.target)
+    return newInstance
+
+def ExtendInstanceByEdge_OLD(instance, edge):
+    """Create and return new instance built from given instance and adding given edge and vertices of edge if new."""
     newInstance = Instance()
     newInstance.vertices = list(instance.vertices)
     newInstance.edges = list(instance.edges)
@@ -166,6 +197,13 @@ def InsertNewInstance(instanceList, newInstance):
 
 def InstanceMatch(instance1,instance2):
     """Return True if given instances match, i.e., contain the same vertex and edge object instances."""
+    if (instance1.vertices == instance2.vertices) and (instance1.edges == instance2.edges):
+        return True
+    else:
+        return False
+    
+def InstanceMatch_OLD(instance1,instance2):
+    """Return True if given instances match, i.e., contain the same vertex and edge object instances."""
     if (len(instance1.vertices) != len(instance2.vertices)):
         return False
     if (len(instance1.edges) != len(instance2.edges)):
@@ -186,6 +224,13 @@ def InstancesOverlap(instanceList,instance):
     return False
 
 def InstanceOverlap(instance1,instance2):
+    """Returns True if given instances share a vertex."""
+    if instance1.vertices.intersection(instance2.vertices):
+        return True
+    else:
+        return False
+
+def InstanceOverlap_OLD(instance1,instance2):
     """Returns True if given instances share a vertex."""
     for vertex1 in instance1.vertices:
         if vertex1 in instance2.vertices:
@@ -227,7 +272,7 @@ def PatternListInsert(newPattern, patternList, maxLength, valueBased):
             patternList.pop(-1)
 
 def UniqueValues(patternList):
-    """Returns list of unique values of patterns in given pattern list, in same order"""
+    """Returns list of unique values of patterns in given pattern list, in same order."""
     uniqueValues = []
     for pattern in patternList:
         if pattern.value not in uniqueValues:
