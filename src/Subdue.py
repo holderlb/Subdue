@@ -29,12 +29,12 @@ def DiscoverPatterns(parameters, graph):
     # get initial one-edge patterns
     parentPatternList = GetInitialPatterns(graph, parameters.temporal)
     if DEBUGFLAG:
-        print "Initial patterns (" + str(len(parentPatternList)) + "):"
+        print("Initial patterns (" + str(len(parentPatternList)) + "):")
         for pattern in parentPatternList:
             pattern.print_pattern('  ')
     discoveredPatternList = []
     while ((patternCount < parameters.limit) and parentPatternList):
-        print str(parameters.limit - patternCount) + " patterns left"
+        print(str(parameters.limit - patternCount) + " patterns left")
         childPatternList = []
         # extend each pattern in parent list (***** todo: in parallel)
         while (parentPatternList):
@@ -45,7 +45,7 @@ def DiscoverPatterns(parameters, graph):
                 while (extendedPatternList):
                     extendedPattern = extendedPatternList.pop(0)
                     if DEBUGFLAG:
-                        print "Extended Pattern:"
+                        print("Extended Pattern:")
                         extendedPattern.print_pattern('  ')
                     if (len(extendedPattern.definition.edges) <= parameters.maxSize):
                         # evaluate each extension and add to child list
@@ -105,17 +105,17 @@ def Subdue(parameters, graph):
     while ((iteration <= parameters.iterations) and (not done)):
         iterationStartTime = time.time()
         if (iteration > 1):
-            print "----- Iteration " + str(iteration) + " -----\n"
-        print "Graph: " + str(len(graph.vertices)) + " vertices, " + str(len(graph.edges)) + " edges"
+            print("----- Iteration " + str(iteration) + " -----\n")
+        print("Graph: " + str(len(graph.vertices)) + " vertices, " + str(len(graph.edges)) + " edges")
         patternList = DiscoverPatterns(parameters, graph)
         if (not patternList):
             done = True
-            print "No patterns found.\n"
+            print("No patterns found.\n")
         else:
-            print "\nBest " + str(len(patternList)) + " patterns:\n"
+            print("\nBest " + str(len(patternList)) + " patterns:\n")
             for pattern in patternList:
                 pattern.print_pattern('  ')
-                print
+                print("")
             # write machine-readable output, if requested
             if (parameters.writePattern):
                 outputFileName = parameters.outputFileName + "-pattern-" + str(iteration) + ".json"
@@ -129,19 +129,19 @@ def Subdue(parameters, graph):
                 # consider another iteration
                 if (len(graph.edges) == 0):
                     done = True
-                    print "Ending iterations - graph fully compressed.\n"
+                    print("Ending iterations - graph fully compressed.\n")
             if ((iteration == parameters.iterations) and (parameters.writeCompressed)):
                 outputFileName = parameters.outputFileName + "-compressed-" + str(iteration) + ".json"
                 graph.write_to_file(outputFileName)
         if (parameters.iterations > 1):
              iterationEndTime = time.time()
-             print "Elapsed time for iteration " + str(iteration) + " = " + str(iterationEndTime - iterationStartTime) + " seconds.\n"
+             print("Elapsed time for iteration " + str(iteration) + " = " + str(iterationEndTime - iterationStartTime) + " seconds.\n")
         iteration += 1
     endTime = time.time()
-    print "SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n"
+    print("SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n")
     
 def main():
-    print "SUBDUE v1.0 (python)\n"
+    print("SUBDUE v1.1 (python)\n")
     parameters = Parameters.Parameters()
     parameters.set_parameters(sys.argv)
     graph = ReadGraph(parameters.inputFileName)

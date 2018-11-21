@@ -147,7 +147,7 @@ class Graph:
         outputFile.close()
     
     def print_graph(self, tab=""):
-        print tab + "Graph:"
+        print(tab + "Graph:")
         for vertex in self.vertices.itervalues():
             vertex.print_vertex(tab+'  ')
         for edge in self.edges.itervalues():
@@ -172,7 +172,7 @@ class Vertex:
         attributeString = ""
         for key,value in self.attributes.iteritems():
             attributeString += ', ' + key + '=' + value
-        print tab + 'vertex "' + self.id + '": timestamp=' + str(self.timestamp) + attributeString
+        print(tab + 'vertex "' + self.id + '": timestamp=' + str(self.timestamp) + attributeString)
     
     def write_to_file(self, outputFile):
         """Write vertex to given file stream in JSON format"""
@@ -213,7 +213,7 @@ class Edge:
         else:
             edgeString += '--'
         edgeString += self.target.id
-        print tab + 'edge "' + self.id + '" (' + edgeString + '): timestamp=' + str(self.timestamp) + attributeString
+        print(tab + 'edge "' + self.id + '" (' + edgeString + '): timestamp=' + str(self.timestamp) + attributeString)
         
     def write_to_file(self, outputFile):
         """Write edge to given file stream in JSON format"""

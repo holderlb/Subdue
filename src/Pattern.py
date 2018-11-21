@@ -19,7 +19,7 @@ class Pattern:
         self.value = float(((len(self.instances) - 1) * len(self.definition.edges)) / float(len(graph.edges))) 
     
     def print_pattern(self, tab):
-        print tab + "Pattern (value=" + str(self.value) + ", instances=" + str(len(self.instances)) + "):"
+        print(tab + "Pattern (value=" + str(self.value) + ", instances=" + str(len(self.instances)) + "):")
         self.definition.print_graph(tab+'  ')
         # May want to make instance printing optional
         instanceNum = 1
@@ -48,7 +48,7 @@ class Instance:
         self.edges = []
     
     def print_instance (self, instanceNum, tab=""):
-        print tab + "Instance " + str(instanceNum) + ":"
+        print(tab + "Instance " + str(instanceNum) + ":")
         for vertex in self.vertices:
             vertex.print_vertex(tab+'  ')
         for edge in self.edges:
