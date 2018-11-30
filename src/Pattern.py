@@ -76,7 +76,7 @@ class Instance:
         """Returns the maximum timestamp over all vertices and edges in the instance."""
         maxTimeStampVertex = max(self.vertices, key = lambda v: v.timestamp)
         maxTimeStampEdge = max(self.edges, key = lambda e: e.timestamp)
-        return max(maxTimeStampVertex.timestamp, maxTimeStampEdge,timestamp)
+        return max(maxTimeStampVertex.timestamp, maxTimeStampEdge.timestamp)
     
     def max_timestamp_OLD(self):
         maxTimeStamp = 0
