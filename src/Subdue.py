@@ -66,7 +66,7 @@ def DiscoverPatterns(parameters, graph):
 def GetInitialPatterns(graph, temporal = False):
     """Returns list of single-edge, evaluated patterns in given graph with more than one instance."""
     initialPatternList = []
-    candidateEdges = graph.edges.values()
+    candidateEdges = list(graph.edges.values())
     while candidateEdges:
         edge1 = candidateEdges.pop(0)
         matchingEdges = [edge1]

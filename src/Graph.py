@@ -50,17 +50,17 @@ class Graph:
         """Set the temporal property of vertices and edges according to their order of arrival."""
         # Collect and sort all unique timestamps in graph
         timestamps = []
-        for vertex in self.vertices.itervalues():
+        for vertex in self.vertices.values():
             if vertex.timestamp not in timestamps:
                 timestamps.append(vertex.timestamp)
-        for edge in self.edges.itervalues():
+        for edge in self.edges.values():
             if edge.timestamp not in timestamps:
                 timestamps.append(edge.timestamp)
         timestamps.sort()
          # Set temporal property based on order of timestamp
-        for vertex in self.vertices.itervalues():
+        for vertex in self.vertices.values():
             vertex.temporal = timestamps.index(vertex.timestamp)
-        for edge in self.edges.itervalues():
+        for edge in self.edges.values():
             edge.temporal = timestamps.index(edge.timestamp)
 
     # Load graph from given JSON array of vertices and edges.
@@ -79,7 +79,7 @@ class Graph:
                         vertex.timestamp = int(vertexDict['timestamp'])
                     if ('attributes' in vertexDict):
                         json_attrs = vertexDict['attributes']
-                        for key,value in json_attrs.iteritems():
+                        for key,value in json_attrs.items():
                             vertex.add_attribute(key, value)
                     self.vertices[vertexId] = vertex
             if ('edge' in json_object):
@@ -97,7 +97,7 @@ class Graph:
                     edge.timestamp = int(edgeDict['timestamp'])
                 if ('attributes' in edgeDict):
                     json_attrs = edgeDict['attributes']
-                    for key,value in json_attrs.iteritems():
+                    for key,value in json_attrs.items():
                         edge.add_attribute(key,value)
                 self.edges[edgeId] = edge
                 sourceVertex.add_edge(edge)
@@ -107,12 +107,12 @@ class Graph:
         """Write graph to given file name in DOT format."""
         outputFile = open(outputFileName, 'w')
         outputFile.write('digraph {\n')
-        for vertex in self.vertices.itervalues():
+        for vertex in self.vertices.values():
             labelStr = str(vertex.id)
             if ('label' in vertex.attributes):
                 labelStr = str(vertex.attributes['label'])
             outputFile.write(str(vertex.id) + ' [label=' + labelStr + '];\n')
-        for edge in self.edges.itervalues():
+        for edge in self.edges.values():
             labelStr = str(edge.id)
             if ('label' in edge.attributes):
                 labelStr = str(edge.attributes['label'])
@@ -129,7 +129,7 @@ class Graph:
         outputFile = open(outputFileName, 'w')
         outputFile.write('[\n')
         firstOne = True
-        for vertex in self.vertices.itervalues():
+        for vertex in self.vertices.values():
             if firstOne:
                 firstOne = False
             else:
@@ -137,7 +137,7 @@ class Graph:
             vertex.write_to_file(outputFile)
         outputFile.write(',\n')
         firstOne = True
-        for edge in self.edges.itervalues():
+        for edge in self.edges.values():
             if firstOne:
                 firstOne = False
             else:
@@ -148,9 +148,9 @@ class Graph:
     
     def print_graph(self, tab=""):
         print(tab + "Graph:")
-        for vertex in self.vertices.itervalues():
+        for vertex in self.vertices.values():
             vertex.print_vertex(tab+'  ')
-        for edge in self.edges.itervalues():
+        for edge in self.edges.values():
             edge.print_edge(tab+'  ')
 
 class Vertex:
@@ -170,7 +170,7 @@ class Vertex:
     
     def print_vertex(self, tab=""):
         attributeString = ""
-        for key,value in self.attributes.iteritems():
+        for key,value in self.attributes.items():
             attributeString += ', ' + key + '=' + value
         print(tab + 'vertex "' + self.id + '": timestamp=' + str(self.timestamp) + attributeString)
     
@@ -180,7 +180,7 @@ class Vertex:
         outputFile.write('     "id": "' + self.id + '",\n')
         outputFile.write('     "attributes": {')
         firstOne = True
-        for key,value in self.attributes.iteritems():
+        for key,value in self.attributes.items():
             if firstOne:
                 firstOne = False
             else:
@@ -205,7 +205,7 @@ class Edge:
     
     def print_edge(self, tab=""):
         attributeString = ""
-        for key,value in self.attributes.iteritems():
+        for key,value in self.attributes.items():
             attributeString += ', ' + key + '=' + value
         edgeString = self.source.id
         if self.directed:
@@ -223,7 +223,7 @@ class Edge:
         outputFile.write('     "target": "' + self.target.id + '",\n')
         outputFile.write('     "attributes": {')
         firstOne = True
-        for key,value in self.attributes.iteritems():
+        for key,value in self.attributes.items():
             if firstOne:
                 firstOne = False
             else:
@@ -274,7 +274,7 @@ def MatchVertex(graph1, graph2, vertexId1, vertexId2, mapping):
     # First check for same attributes
     vertex1 = graph1.vertices[vertexId1]
     vertex2 = graph2.vertices[vertexId2]
-    if (cmp(vertex1.attributes, vertex2.attributes) != 0):
+    if not (vertex1.attributes == vertex2.attributes):
         return False
     if (len(vertex1.edges) != len(vertex2.edges)):
         return False
@@ -296,7 +296,7 @@ def MatchVertex(graph1, graph2, vertexId1, vertexId2, mapping):
 
 def MatchEdge(edge1, edge2, mapping):
     """Return True if given edges match, i.e., have same attributes, direction, and source/target vertices."""
-    if (cmp(edge1.attributes, edge2.attributes) != 0):
+    if not (edge1.attributes == edge2.attributes):
         return False
     if (edge1.directed != edge2.directed):
         return False
