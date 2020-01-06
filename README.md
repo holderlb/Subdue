@@ -10,7 +10,7 @@ Support: This material is based upon work supported by the National Science Foun
 
 ## Running Subdue
 
-Subdue is run using the following command-line format:
+Subdue is run using the following command-line format (requires Python 3):
 
 `python Subdue.py [options] <inputfile>`
 
