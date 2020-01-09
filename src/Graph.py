@@ -2,7 +2,7 @@
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
-# Copyright (c) 2017-2018. Washington State University.
+# Copyright (c) 2017-2020. Washington State University.
 
 import json
         
