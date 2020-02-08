@@ -245,32 +245,56 @@ def GraphMatch(graph1, graph2):
         return False
     if (len(graph1.edges) != len(graph2.edges)):
         return False
-    return ExtendMapping(graph1,graph2,{})
+    if (len(graph1.edges) == 0):
+        v1keys = list(graph1.vertices.keys())
+        v2keys = list(graph2.vertices.keys())
+        return MatchVertex(graph1, graph2, v1keys[0], v2keys[0])
+    return ExtendMapping(graph1, graph2, {})
 
 def ExtendMapping(graph1, graph2, mapping):
-    """Find the next unmapped vertex in graph1 and tries mapping it to each unmapped vertex in graph2."""
-    if (len(mapping) == len(graph1.vertices)):
+    """Find the next unmapped edge in graph1 and try mapping it to each unmapped edge in graph2."""
+    if (len(mapping) == len(graph1.edges)):
         return True
-    # Find unmapped vertex in graph1 (should always exist at this point)
-    vertexId1 = None
-    for vertexId in graph1.vertices:
-        if (not (vertexId in mapping)):
-            vertexId1 = vertexId
+    # Find unmapped edge in graph1 (should always exist at this point)
+    edgeId1 = None
+    for edgeId in graph1.edges:
+        if (not (edgeId in mapping)):
+            edgeId1 = edgeId
             break
-    # Find unmapped, matching vertex in graph2
-    for vertexId2 in graph2.vertices:
-        if not (vertexId2 in mapping.values()):
-            if MatchVertex(graph1,graph2,vertexId1,vertexId2,mapping):
+    # Find unmapped, matching edge in graph2
+    for edgeId2 in graph2.edges:
+        if not (edgeId2 in mapping.values()):
+            if MatchEdge(graph1,graph2,edgeId1,edgeId2,mapping):
                 # Extend mapping
-                mapping[vertexId1] = vertexId2
+                mapping[edgeId1] = edgeId2
                 if ExtendMapping(graph1,graph2,mapping):
                     return True
-                mapping.pop(vertexId1)
+                mapping.pop(edgeId1)
     return False
 
-def MatchVertex(graph1, graph2, vertexId1, vertexId2, mapping):
+def MatchEdge(graph1, graph2, edgeId1, edgeId2, mapping):
+    """Return True if edges, corresponding to given edge IDs in given graphs, match;
+    i.e., have same attributes, direction, temporal ordering, and source/target vertices."""
+    edge1 = graph1.edges[edgeId1]
+    edge2 = graph2.edges[edgeId2]
+    if not (edge1.attributes == edge2.attributes):
+        return False
+    if (edge1.directed != edge2.directed):
+        return False
+    # Temporal field only set if discovering temporal patterns; otherwise, this test always True
+    if (edge1.temporal != edge2.temporal):
+        return False
+    if (MatchVertex(graph1, graph2, edge1.source.id, edge2.source.id) and
+        MatchVertex(graph1, graph2, edge1.target.id, edge2.target.id)):
+        return True
+    if ((not edge1.directed) and MatchVertex(graph1, graph2, edge1.source.id, edge2.target.id) and
+        MatchVertex(graph1, graph2, edge1.target.id, edge2.source.id)):
+        return True
+    return False
+
+def MatchVertex(graph1, graph2, vertexId1, vertexId2):
     """Returns True if vertices, corresponding to given vertex IDs in given graphs, match;
-       i.e., have same attributes and consistent edges according to mapping."""
+       i.e., same attributes and temporal edges."""
     # First check for same attributes
     vertex1 = graph1.vertices[vertexId1]
     vertex2 = graph2.vertices[vertexId2]
@@ -281,33 +305,8 @@ def MatchVertex(graph1, graph2, vertexId1, vertexId2, mapping):
     # Temporal field only set if discovering temporal patterns; otherwise, this test always True
     if (vertex1.temporal != vertex2.temporal):
         return False
-    edgeMapping = {}
-    for edge1 in vertex1.edges:
-        found = False
-        for edge2 in vertex2.edges:
-            if (not (edge2.id in edgeMapping.values())):
-                if MatchEdge(edge1,edge2,mapping):
-                    edgeMapping[edge1.id] = edge2.id
-                    found = True
-                    break
-        if (not found):
-            return False
     return True
 
-def MatchEdge(edge1, edge2, mapping):
-    """Return True if given edges match, i.e., have same attributes, direction, and source/target vertices."""
-    if not (edge1.attributes == edge2.attributes):
-        return False
-    if (edge1.directed != edge2.directed):
-        return False
-    # Temporal field only set if discovering temporal patterns; otherwise, this test always True
-    if (edge1.temporal != edge2.temporal):
-        return False
-    if ((edge1.source.id in mapping) and (mapping[edge1.source.id] != edge2.source.id)):
-        return False
-    if ((edge1.target.id in mapping) and (mapping[edge1.target.id] != edge2.target.id)):
-        return False
-    return True
 
 # ----- Graph Creation
 
