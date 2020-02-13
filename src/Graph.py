@@ -171,7 +171,7 @@ class Vertex:
     def print_vertex(self, tab=""):
         attributeString = ""
         for key,value in self.attributes.items():
-            attributeString += ', ' + key + '=' + value
+            attributeString += ', ' + key + '=' + str(value)
         print(tab + 'vertex "' + self.id + '": timestamp=' + str(self.timestamp) + attributeString)
     
     def write_to_file(self, outputFile):
@@ -206,7 +206,7 @@ class Edge:
     def print_edge(self, tab=""):
         attributeString = ""
         for key,value in self.attributes.items():
-            attributeString += ', ' + key + '=' + value
+            attributeString += ', ' + key + '=' + str(value)
         edgeString = self.source.id
         if self.directed:
             edgeString += '->'
