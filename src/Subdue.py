@@ -147,12 +147,7 @@ def main():
     graph = ReadGraph(parameters.inputFileName)
     #outputFileName = parameters.outputFileName + ".dot"
     #graph.write_to_dot(outputFileName)
-    if (parameters.limit == 0):
-        parameters.limit = len(graph.edges) / 2
-    if (parameters.maxSize == 0):
-        parameters.maxSize = len(graph.edges) / 2
-    if (parameters.iterations == 0):
-        parameters.iterations = len(graph.edges)
+    parameters.set_defaults_for_graph(graph)
     Subdue(parameters, graph)
 
 if __name__ == "__main__":
