@@ -97,11 +97,18 @@ def GetInitialPatterns(graph, temporal = False):
     return initialPatternList
 
 def Subdue(parameters, graph):
-    """Top-level function for Subdue that discovers best pattern in graph.
-       Optionally, Subdue can then compress the graph with the best pattern, and iterate."""
+    """
+    Top-level function for Subdue that discovers best pattern in graph.
+    Optionally, Subdue can then compress the graph with the best pattern, and iterate.
+
+    :param graph: instance of Subdue.Graph
+    :param parameters: instance of Subdue.Parameters
+    :return: patterns for each iteration -- a list of iterations each containing discovered patterns.
+    """
     startTime = time.time()
     iteration = 1
     done = False
+    patterns = list()
     while ((iteration <= parameters.iterations) and (not done)):
         iterationStartTime = time.time()
         if (iteration > 1):
@@ -112,6 +119,7 @@ def Subdue(parameters, graph):
             done = True
             print("No patterns found.\n")
         else:
+            patterns.append(patternList)
             print("\nBest " + str(len(patternList)) + " patterns:\n")
             for pattern in patternList:
                 pattern.print_pattern('  ')
@@ -139,7 +147,8 @@ def Subdue(parameters, graph):
         iteration += 1
     endTime = time.time()
     print("SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n")
-    
+    return patterns
+
 def main():
     print("SUBDUE v1.1 (python)\n")
     parameters = Parameters.Parameters()
