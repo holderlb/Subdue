@@ -149,6 +149,68 @@ def Subdue(parameters, graph):
     print("SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n")
     return patterns
 
+def nx_Subdue(
+    graph,
+    node_attributes=None,
+    edge_attributes=None,
+    **subdue_parameters
+):
+    """
+    :param graph: networkx.Graph
+    :param node_attributes: (Default: None)   -- attributes on the nodes to use for pattern matching, use `None` for all
+    :param edge_attributes: (Default: None)   -- attributes on the edges to use for pattern matching, use `None` for all
+
+    :param beamWidth: (Default: 4)            -- Number of patterns to retain after each expansion of previous patterns; based on value.
+    :param iterations: (Default: 1)           -- Iterations of Subdue's discovery process. If more than 1, Subdue compresses graph with best pattern before next run. If 0, then run until no more compression (i.e., set to |E|).
+    :param limit: (Default: 0)                -- Number of patterns considered; default (0) is |E|/2.
+    :param maxSize: (Default: 0)              -- Maximum size (#edges) of a pattern; default (0) is |E|/2.
+    :param minSize: (Default: 1)              -- Minimum size (#edges) of a pattern; default is 1.
+    :param numBest: (Default: 3)              -- Number of best patterns to report at end; default is 3.
+    :param prune: (Default: False)            -- Remove any patterns that are worse than their parent.
+    :param valueBased: (Default: False)       -- Retain all patterns with the top beam best values.
+    :param temporal: (Default: False)         -- Discover static (False) or temporal (True) patterns
+
+    :return: list of patterns, where each pattern is a list of pattern instances, with an instance being a dictionary
+    containing 
+        `nodes` -- list of IDs, which can be used with `networkx.Graph.subgraph()`
+        `edges` -- list of tuples (id_from, id_to), which can be used with `networkx.Graph.edge_subgraph()`
+    
+    For `iterations`>1 the the list is split by iterations, and some patterns will contain node IDs not present in
+    the original graph, e.g. `PATTERN-X-Y`, such node ID refers to a previously compressed pattern, and it can be 
+    accessed as `output[X][Y]`.
+
+    """
+    parameters = Parameters.Parameters()
+    if len(subdue_parameters) > 0:
+        parameters.set_parameters_from_kwargs(**subdue_parameters)
+    subdue_graph = Graph.Graph()
+    subdue_graph.load_from_networkx(graph, node_attributes, edge_attributes)
+    parameters.set_defaults_for_graph(subdue_graph)
+    iterations = Subdue(parameters, subdue_graph)
+    iterations = unwrap_output(iterations)
+    if parameters.iterations == 1:
+        return iterations[0]
+    else:
+        return iterations
+
+def unwrap_output(iterations):
+    """
+    Subroutine of `nx_Subdue` -- unwraps the standard Subdue output into pure python objects compatible with networkx
+    """
+    out = list()
+    for iteration in iterations:
+        iter_out = list()
+        for pattern in iteration:
+            pattern_out = list()
+            for instance in pattern.instances:
+                pattern_out.append({
+                    'nodes': [vertex.id for vertex in instance.vertices],
+                    'edges': [(edge.source.id, edge.target.id) for edge in instance.edges]
+                })
+            iter_out.append(pattern_out)
+        out.append(iter_out)
+    return out
+
 def main():
     print("SUBDUE v1.1 (python)\n")
     parameters = Parameters.Parameters()

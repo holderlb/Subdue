@@ -76,3 +76,6 @@ class Parameters:
             self.maxSize = len(graph.edges) / 2
         if (self.iterations == 0):
             self.iterations = len(graph.edges)
+
+    def set_parameters_from_kwargs(self, **kwargs):
+        self.__dict__.update(kwargs)

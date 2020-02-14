@@ -102,7 +102,42 @@ class Graph:
                 self.edges[edgeId] = edge
                 sourceVertex.add_edge(edge)
                 targetVertex.add_edge(edge)
-    
+
+    def load_from_networkx(
+        self,
+        networkx_graph,
+        node_attributes=None,
+        edge_attributes=None,
+    ):
+        # helper routine
+        def select_attributes_from_dict(dict_, attributes=None):
+            if attributes is None:
+                return dict_
+            else:
+                return {attr: dict_[attr] for attr in attributes}
+
+        directed = networkx_graph.is_directed
+        subdue_format = list()
+        for node_id in networkx_graph.nodes:
+            subdue_format.append({
+                'vertex': {
+                    'id': node_id,
+                    'attributes': select_attributes_from_dict(networkx_graph.nodes[node_id], node_attributes).copy(),
+                }
+            })
+        for (u, v) in networkx_graph.edges():
+            subdue_format.append({
+                'edge': {
+                    'id': f'{u}-{v}',
+                    'source': u,
+                    'target': v,
+                    'directed': directed,
+                    'attributes': select_attributes_from_dict(networkx_graph.edges[(u, v)], edge_attributes).copy(),
+                }
+            })
+
+        self.load_from_json(subdue_format)
+
     def write_to_dot(self, outputFileName):
         """Write graph to given file name in DOT format."""
         outputFile = open(outputFileName, 'w')
