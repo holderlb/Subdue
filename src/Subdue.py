@@ -149,7 +149,7 @@ def Subdue(parameters, graph):
     print("SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n")
     return patterns
 
-def nx_Subdue(
+def nx_subdue(
     graph,
     node_attributes=None,
     edge_attributes=None,
