@@ -90,7 +90,7 @@ class Graph:
                 sourceVertex = self.vertices[sourceId]
                 targetVertex = self.vertices[targetId]
                 directed = False
-                if (edgeDict['directed'] == 'True'):
+                if (edgeDict['directed'] == 'true'):
                     directed = True
                 edge = Edge(edgeId, sourceVertex, targetVertex, directed)
                 if ('timestamp' in edgeDict):
