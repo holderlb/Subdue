@@ -189,6 +189,8 @@ def nx_subdue(
     iterations = Subdue(parameters, subdue_graph)
     iterations = unwrap_output(iterations)
     if parameters.iterations == 1:
+        if len(iterations) == 0:
+            return None
         return iterations[0]
     else:
         return iterations
