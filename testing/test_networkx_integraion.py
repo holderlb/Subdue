@@ -75,7 +75,7 @@ prints_main = capture_prints.getvalue()
 subdue_example_graph = subdue_json_to_undirected_nx_graph(subdue_example_path)
 capture_prints = io.StringIO()
 with contextlib.redirect_stdout(capture_prints):
-    nx_subdue(graph=subdue_example_graph)
+    nx_subdue(graph=subdue_example_graph, verbose=True)
 prints_nx_subdue = capture_prints.getvalue()
 
 
