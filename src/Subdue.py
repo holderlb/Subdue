@@ -7,6 +7,7 @@
 import sys
 import time
 import json
+import contextlib
 import Parameters
 import Graph
 import Pattern
@@ -153,12 +154,14 @@ def nx_subdue(
     graph,
     node_attributes=None,
     edge_attributes=None,
+    verbose=False,
     **subdue_parameters
 ):
     """
     :param graph: networkx.Graph
     :param node_attributes: (Default: None)   -- attributes on the nodes to use for pattern matching, use `None` for all
     :param edge_attributes: (Default: None)   -- attributes on the edges to use for pattern matching, use `None` for all
+    :param verbose: (Default: False)          -- if True, print progress, as well as report each found pattern
 
     :param beamWidth: (Default: 4)            -- Number of patterns to retain after each expansion of previous patterns; based on value.
     :param iterations: (Default: 1)           -- Iterations of Subdue's discovery process. If more than 1, Subdue compresses graph with best pattern before next run. If 0, then run until no more compression (i.e., set to |E|).
@@ -186,7 +189,11 @@ def nx_subdue(
     subdue_graph = Graph.Graph()
     subdue_graph.load_from_networkx(graph, node_attributes, edge_attributes)
     parameters.set_defaults_for_graph(subdue_graph)
-    iterations = Subdue(parameters, subdue_graph)
+    if verbose:
+        iterations = Subdue(parameters, subdue_graph)
+    else:
+        with contextlib.redirect_stdout(None):
+            iterations = Subdue(parameters, subdue_graph)
     iterations = unwrap_output(iterations)
     if parameters.iterations == 1:
         if len(iterations) == 0:
