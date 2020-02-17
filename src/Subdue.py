@@ -177,7 +177,7 @@ def nx_subdue(
     
     For `iterations`>1 the the list is split by iterations, and some patterns will contain node IDs not present in
     the original graph, e.g. `PATTERN-X-Y`, such node ID refers to a previously compressed pattern, and it can be 
-    accessed as `output[X][Y]`.
+    accessed as `output[X-1][0][Y]`.
 
     """
     parameters = Parameters.Parameters()
