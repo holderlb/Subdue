@@ -141,7 +141,7 @@ def Subdue(parameters, graph):
     print("SUBDUE done. Elapsed time = " + str(endTime - startTime) + " seconds\n")
     
 def main():
-    print("SUBDUE v1.1 (python)\n")
+    print("SUBDUE v1.2 (python)\n")
     parameters = Parameters.Parameters()
     parameters.set_parameters(sys.argv)
     graph = ReadGraph(parameters.inputFileName)
