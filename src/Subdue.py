@@ -148,11 +148,12 @@ def main():
     #outputFileName = parameters.outputFileName + ".dot"
     #graph.write_to_dot(outputFileName)
     if (parameters.limit == 0):
-        parameters.limit = len(graph.edges) / 2
+        parameters.limit = int(len(graph.edges) / 2)
     if (parameters.maxSize == 0):
-        parameters.maxSize = len(graph.edges) / 2
+        parameters.maxSize = int(len(graph.edges) / 2)
     if (parameters.iterations == 0):
         parameters.iterations = len(graph.edges)
+    parameters.print()
     Subdue(parameters, graph)
 
 if __name__ == "__main__":

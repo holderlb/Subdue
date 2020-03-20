@@ -68,4 +68,21 @@ class Parameters:
             if optionName == "--temporal":
                 self.temporal = True
             index += 1
+    
+    def print(self):
+        print("Parameters:")
+        print("  Input File Name: " + self.inputFileName)
+        print("  Output File Name: " + self.outputFileName)
+        print("  Beam Width: " + str(self.beamWidth))
+        print("  Iterations: " + str(self.iterations))
+        print("  Limit: " + str(self.limit))
+        print("  Max Size: " + str(self.maxSize))
+        print("  Min Size: " + str(self.minSize))
+        print("  Num Best: " + str(self.numBest))
+        print("  Prune: " + str(self.prune))
+        print("  Value Based: " + str(self.valueBased))
+        print("  Write Compressed: " + str(self.writeCompressed))
+        print("  Write Pattern: " + str(self.writePattern))
+        print("  Write Instances: " + str(self.writeInstances))
+        print("  Temporal: " + str(self.temporal) + "\n")
         
