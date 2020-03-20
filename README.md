@@ -2,6 +2,8 @@
 
 The Subdue graph miner discovers highly-compressing patterns in an input graph.  Compression is measured by the reduction in graph size after replacing each instance of the pattern with a single node. This version of Subdue can also find temporal patterns, i.e., the instances of the pattern also match in terms of the arrival order of the nodes and edges that comprise the pattern.
 
+Starting with version 1.2, Subdue uses a polynomially-bounded, approximate graph isomorphism algorithm to improve efficiency while maintaining reasonable accuracy.
+
 Subdue is designed to accept input graphs in the format produced by the [Graph Stream Generator](https://github.com/holderlb/graph-stream-generator).
 
 Author: Dr. Larry Holder, School of Electrical Engineering and Computer Science, Washington State University, email: holder@wsu.edu.
