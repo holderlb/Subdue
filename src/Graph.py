@@ -259,11 +259,13 @@ def GraphMatch(graph1, graph2):
     matchFound, numMappings = ExtendMapping(graph1, graph2)
     return matchFound
 
-def ExtendMapping(graph1, graph2, mapping={}, numMappings=0):
+def ExtendMapping(graph1, graph2, mapping=None, numMappings=0):
     """Find the next unmapped edge in graph1 and try mapping it to each unmapped edge in graph2.
     Constrain number of mappings to be at most gMaxMappings. Return the match result and
     number of mappings so far."""
     global gMaxMappings
+    if mapping is None:
+        mapping = {}
     if (len(mapping) == len(graph1.edges)):
         return True, numMappings
     if numMappings > gMaxMappings:
@@ -299,9 +301,11 @@ def GraphMatch_Orig(graph1, graph2):
         return MatchVertex(graph1, graph2, v1keys[0], v2keys[0])
     return ExtendMapping_Orig(graph1, graph2)
 
-def ExtendMapping_Orig(graph1, graph2, mapping={}):
+def ExtendMapping_Orig(graph1, graph2, mapping=None):
     """Find the next unmapped edge in graph1 and try mapping it to each unmapped edge in graph2.
     Return True if leads to a match, else False."""
+    if mapping is None:
+        mapping = {}
     if (len(mapping) == len(graph1.edges)):
         return True
     # Find unmapped edge in graph1 (should always exist at this point)

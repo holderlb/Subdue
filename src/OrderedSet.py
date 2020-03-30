@@ -11,7 +11,9 @@
 
 class OrderedSet:
 
-    def __init__(self, arg = []):
+    def __init__(self, arg = None):
+        if arg is None:
+            arg = []
         self.list_container = []
         self.set_container = set()
         elements = []
