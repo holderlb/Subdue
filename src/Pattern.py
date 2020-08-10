@@ -4,6 +4,7 @@
 #
 # Copyright (c) 2017-2020. Washington State University.
 
+from OrderedSet import OrderedSet # specialized Subdue version
 import Graph
 
 class Pattern:
@@ -44,8 +45,8 @@ class Pattern:
 class Instance:
     
     def __init__(self):
-        self.vertices = set()
-        self.edges = set()
+        self.vertices = OrderedSet()
+        self.edges = OrderedSet()
     
     def print_instance (self, instanceNum, tab=""):
         print(tab + "Instance " + str(instanceNum) + ":")
@@ -129,7 +130,7 @@ def ExtendPattern (pattern, temporal = False):
 def ExtendInstance (instance):
     """Returns list of new instances created by extending the given instance by one new edge in all possible ways."""
     newInstances = []
-    unusedEdges = set([e for v in instance.vertices for e in v.edges]) - instance.edges
+    unusedEdges = OrderedSet([e for v in instance.vertices for e in v.edges]) - instance.edges
     for edge in unusedEdges:
         newInstance = ExtendInstanceByEdge(instance, edge)
         newInstances.append(newInstance)
@@ -138,8 +139,8 @@ def ExtendInstance (instance):
 def ExtendInstanceByEdge(instance, edge):
     """Create and return new instance built from given instance and adding given edge and vertices of edge if new."""
     newInstance = Instance()
-    newInstance.vertices = set(instance.vertices)
-    newInstance.edges = set(instance.edges)
+    newInstance.vertices = OrderedSet(instance.vertices)
+    newInstance.edges = OrderedSet(instance.edges)
     newInstance.edges.add(edge)
     newInstance.vertices.add(edge.source)
     newInstance.vertices.add(edge.target)
@@ -171,10 +172,7 @@ def InstancesOverlap(instanceList,instance):
 
 def InstanceOverlap(instance1,instance2):
     """Returns True if given instances share a vertex."""
-    if instance1.vertices.intersection(instance2.vertices):
-        return True
-    else:
-        return False
+    return instance1.vertices.intersect(instance2.vertices)
 
 
 # ----- Pattern List Operations
