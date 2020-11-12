@@ -12,11 +12,20 @@ Support: This material is based upon work supported by the National Science Foun
 
 ## Running Subdue
 
+#### CLI
 Subdue is run using the following command-line format (requires Python 3):
 
 `python Subdue.py [options] <inputfile>`
 
 The options, input file format and output are described below.
+
+#### networkx
+Alternatively, if you work with `networkx`, you can `Subdue.nx_subdue` directly on the graph. See function's
+documentation for details. Simple usage is as follows:
+```python
+from Subdue import nx_subdue
+out = nx_subdue(graph, **params)
+```
 
 ## Options
 

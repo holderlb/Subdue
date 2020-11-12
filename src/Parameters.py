@@ -86,3 +86,13 @@ class Parameters:
         print("  Write Instances: " + str(self.writeInstances))
         print("  Temporal: " + str(self.temporal) + "\n")
         
+    def set_defaults_for_graph(self, graph):
+        if (self.limit == 0):
+            self.limit = len(graph.edges) / 2
+        if (self.maxSize == 0):
+            self.maxSize = len(graph.edges) / 2
+        if (self.iterations == 0):
+            self.iterations = len(graph.edges)
+
+    def set_parameters_from_kwargs(self, **kwargs):
+        self.__dict__.update(kwargs)
