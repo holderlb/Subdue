@@ -2,7 +2,7 @@
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
-# Copyright (c) 2017-2020. Washington State University.
+# Copyright (c) 2017-2021. Washington State University.
 
 import os
 
@@ -88,9 +88,9 @@ class Parameters:
         
     def set_defaults_for_graph(self, graph):
         if (self.limit == 0):
-            self.limit = len(graph.edges) / 2
+            self.limit = int(len(graph.edges) / 2)
         if (self.maxSize == 0):
-            self.maxSize = len(graph.edges) / 2
+            self.maxSize = int(len(graph.edges) / 2)
         if (self.iterations == 0):
             self.iterations = len(graph.edges)
 

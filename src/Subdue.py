@@ -2,7 +2,7 @@
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
-# Copyright (c) 2017-2020. Washington State University.
+# Copyright (c) 2017-2021. Washington State University.
 
 import sys
 import time
@@ -221,13 +221,14 @@ def unwrap_output(iterations):
     return out
 
 def main():
-    print("SUBDUE v1.2 (python)\n")
+    print("SUBDUE v1.3 (python)\n")
     parameters = Parameters.Parameters()
     parameters.set_parameters(sys.argv)
     graph = ReadGraph(parameters.inputFileName)
     #outputFileName = parameters.outputFileName + ".dot"
     #graph.write_to_dot(outputFileName)
     parameters.set_defaults_for_graph(graph)
+    parameters.print()
     Subdue(parameters, graph)
 
 if __name__ == "__main__":

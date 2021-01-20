@@ -2,7 +2,7 @@
 #
 # Written by Larry Holder (holder@wsu.edu).
 #
-# Copyright (c) 2017-2020. Washington State University.
+# Copyright (c) 2017-2021. Washington State University.
 
 from OrderedSet import OrderedSet # specialized Subdue version
 import Graph
