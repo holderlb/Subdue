@@ -57,6 +57,8 @@ def DiscoverPatterns(parameters, graph):
             if (len(parentPattern.definition.edges) >= parameters.minSize):
                 Pattern.PatternListInsert(parentPattern, discoveredPatternList, parameters.numBest, False) # valueBased = False
         parentPatternList = childPatternList
+        if not parentPatternList:
+            print("No more patterns to consider", flush=True)
     # insert any remaining patterns in parent list on to discovered list
     while (parentPatternList):
         parentPattern = parentPatternList.pop(0)
