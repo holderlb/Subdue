@@ -20,7 +20,7 @@ Subdue is run using the following command-line format (requires Python 3):
 The options, input file format and output are described below.
 
 #### networkx
-Alternatively, if you work with `networkx`, you can `Subdue.nx_subdue` directly on the graph. See function's
+Alternatively, if you work with `networkx`, you can execute `Subdue.nx_subdue` directly on the graph. See function's
 documentation for details. Simple usage is as follows:
 ```python
 from Subdue import nx_subdue
