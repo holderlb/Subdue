@@ -66,37 +66,37 @@ def DiscoverPatterns(parameters, graph):
             Pattern.PatternListInsert(parentPattern, discoveredPatternList, parameters.numBest, False) # valueBased = False
     return discoveredPatternList
 
-def GetInitialPatterns(graph, temporal = False):
-    """Returns list of single-edge, evaluated patterns in given graph with more than one instance."""
+def GetInitialPatterns(graph, temporal = False, overlap = True):
+    """Returns list of single-edge, evaluated patterns in given graph with more than one instance.
+    If overlap=False, then instances of a single-edge pattern cannot share vertices."""
     initialPatternList = []
-    candidateEdges = list(graph.edges.values())
-    while candidateEdges:
-        edge1 = candidateEdges.pop(0)
-        matchingEdges = [edge1]
-        nonmatchingEdges = []
-        graph1 = Graph.CreateGraphFromEdge(edge1)
+    # Create a graph and an instance for each edge
+    edgeGraphInstancePairs = []
+    for edge in graph.edges.values():
+        graph1 = Graph.CreateGraphFromEdge(edge)
         if temporal:
             graph1.TemporalOrder()
-        for edge2 in candidateEdges:
-            graph2 = Graph.CreateGraphFromEdge(edge2)
-            if temporal:
-                graph2.TemporalOrder()
-            if Graph.GraphMatch(graph1,graph2):
-                matchingEdges.append(edge2)
+        instance1 = Pattern.CreateInstanceFromEdge(edge)
+        edgeGraphInstancePairs.append((graph1,instance1))
+    while edgeGraphInstancePairs:
+        edgePair1 = edgeGraphInstancePairs.pop(0)
+        graph1 = edgePair1[0]
+        instance1 = edgePair1[1]
+        pattern = Pattern.Pattern()
+        pattern.definition = graph1
+        pattern.instances.append(instance1)
+        nonmatchingEdgePairs = []
+        for edgePair2 in edgeGraphInstancePairs:
+            graph2 = edgePair2[0]
+            instance2 = edgePair2[1]
+            if Graph.GraphMatch(graph1,graph2) and (overlap or (not Pattern.InstancesOverlap(pattern.instances,instance2))):
+                pattern.instances.append(instance2)
             else:
-                nonmatchingEdges.append(edge2)
-        if len(matchingEdges) > 1:
-            # Create initial pattern
-            pattern = Pattern.Pattern()
-            pattern.definition = Graph.CreateGraphFromEdge(matchingEdges[0])
-            if temporal:
-                pattern.definition.TemporalOrder()
-            pattern.instances = []
-            for edge in matchingEdges:
-                pattern.instances.append(Pattern.CreateInstanceFromEdge(edge))
+                nonmatchingEdgePairs.append(edgePair2)
+        if len(pattern.instances) > 1:
             pattern.evaluate(graph)
             initialPatternList.append(pattern)
-        candidateEdges = nonmatchingEdges
+        edgeGraphInstancePairs = nonmatchingEdgePairs
     return initialPatternList
 
 def Subdue(parameters, graph):
