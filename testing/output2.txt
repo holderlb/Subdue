@@ -1,4 +1,4 @@
-SUBDUE v1.3 (python)
+SUBDUE v1.4 (python)
 
 Parameters:
   Input File Name: inputgraph2.json
@@ -9,6 +9,7 @@ Parameters:
   Max Size: 2136
   Min Size: 1
   Num Best: 3
+  Overlap: none
   Prune: False
   Value Based: False
   Write Compressed: False
@@ -18,45 +19,45 @@ Parameters:
 
 Graph: 4986 vertices, 4272 edges
 2136 patterns left
-2085 patterns left
-2081 patterns left
-2077 patterns left
-2073 patterns left
-2069 patterns left
-2065 patterns left
-2061 patterns left
-2057 patterns left
-2053 patterns left
-2049 patterns left
-2045 patterns left
-2041 patterns left
-2037 patterns left
-2033 patterns left
-2029 patterns left
-2025 patterns left
-2021 patterns left
-2017 patterns left
-2013 patterns left
-2009 patterns left
-2005 patterns left
-2001 patterns left
-1997 patterns left
-1993 patterns left
-1989 patterns left
-1985 patterns left
-1981 patterns left
-1977 patterns left
-1973 patterns left
-1969 patterns left
-1965 patterns left
-1961 patterns left
-1957 patterns left
-1953 patterns left
-1951 patterns left
+2060 patterns left
+2056 patterns left
+2052 patterns left
+2048 patterns left
+2044 patterns left
+2040 patterns left
+2036 patterns left
+2032 patterns left
+2028 patterns left
+2024 patterns left
+2020 patterns left
+2016 patterns left
+2012 patterns left
+2008 patterns left
+2004 patterns left
+2000 patterns left
+1996 patterns left
+1992 patterns left
+1988 patterns left
+1984 patterns left
+1980 patterns left
+1976 patterns left
+1972 patterns left
+1968 patterns left
+1964 patterns left
+1960 patterns left
+1956 patterns left
+1952 patterns left
 1948 patterns left
 1944 patterns left
 1940 patterns left
-1939 patterns left
+1936 patterns left
+1932 patterns left
+1928 patterns left
+1926 patterns left
+1923 patterns left
+1919 patterns left
+1915 patterns left
+1914 patterns left
 No more patterns to consider
 
 Best 3 patterns:
@@ -9966,5 +9967,5 @@ Best 3 patterns:
       edge "4266" (4980--4981): timestamp=998, label=e12
       edge "4268" (4981--4982): timestamp=1003, label=e23
 
-SUBDUE done. Elapsed time = 266.6282157897949 seconds
+SUBDUE done. Elapsed time = 289.51358008384705 seconds
 

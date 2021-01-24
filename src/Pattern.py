@@ -98,7 +98,7 @@ def CreatePatternFromInstances(definition, instances):
 
 # ----- Pattern Extension
 
-def ExtendPattern (pattern, temporal = False):
+def ExtendPattern (parameters, pattern):
     """Return list of patterns created by extending each instance of the given pattern by one edge in all possible ways,
        and then collecting matching extended instances together into new patterns."""
     extendedInstances = []
@@ -110,15 +110,15 @@ def ExtendPattern (pattern, temporal = False):
     while extendedInstances:
         newInstance = extendedInstances.pop(0)
         newInstanceGraph = Graph.CreateGraphFromInstance(newInstance)
-        if temporal:
+        if parameters.temporal:
             newInstanceGraph.TemporalOrder()
         matchingInstances = [newInstance]
         nonmatchingInstances = []
         for extendedInstance in extendedInstances:
             extendedInstanceGraph = Graph.CreateGraphFromInstance(extendedInstance)
-            if temporal:
+            if parameters.temporal:
                 extendedInstanceGraph.TemporalOrder()
-            if Graph.GraphMatch(newInstanceGraph,extendedInstanceGraph) and (not InstancesOverlap(matchingInstances,extendedInstance)):
+            if Graph.GraphMatch(newInstanceGraph,extendedInstanceGraph) and (not InstancesOverlap(parameters.overlap, matchingInstances, extendedInstance)):
                 matchingInstances.append(extendedInstance)
             else:
                 nonmatchingInstances.append(extendedInstance)
@@ -163,16 +163,26 @@ def InstanceMatch(instance1,instance2):
     else:
         return False
 
-def InstancesOverlap(instanceList,instance):
-    """Returns True if instance contains a vertex that is contained in an instance of the given instanceList."""
+def InstancesOverlap(overlap, instanceList, instance):
+    """Returns True if instance overlaps with an instance in the given instanceList
+    according to the overlap parameter, which indicates what type of overlap ignored.
+    Overlap="none" means no overlap ignored. Overlap="vertex" means vertex overlap
+    ignored. Overlap="edge" means vertex and edge overlap ignored, but the instances
+    cannot be identical."""
     for instance2 in instanceList:
-        if InstanceOverlap(instance,instance2):
+        if InstanceOverlap(overlap, instance, instance2):
             return True
     return False
 
-def InstanceOverlap(instance1,instance2):
-    """Returns True if given instances share a vertex."""
-    return instance1.vertices.intersect(instance2.vertices)
+def InstanceOverlap(overlap, instance1, instance2):
+    """Returns True if given instances overlap according to given overlap parameter.
+    See InstancesOverlap for explanation."""
+    if overlap == "edge":
+        return InstanceMatch(instance1, instance2)
+    elif overlap == "vertex":
+        return instance1.edges.intersect(instance2.edges)
+    else: # overlap == "none"
+        return instance1.vertices.intersect(instance2.vertices)
 
 
 # ----- Pattern List Operations

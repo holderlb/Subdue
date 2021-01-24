@@ -18,6 +18,7 @@ class Parameters:
         self.maxSize = 0              # Maximum size (#edges) of a pattern; default (0) is |E|/2.
         self.minSize = 1              # Minimum size (#edges) of a pattern; default is 1.
         self.numBest = 3              # Number of best patterns to report at end; default is 3.
+        self.overlap = "none"         # Extent that pattern instances can overlap (none, vertex, edge)
         self.prune = False            # Remove any patterns that are worse than their parent.
         self.valueBased = False       # Retain all patterns with the top beam best values.
         self.writeCompressed = False  # Write compressed graph after iteration i to file outputFileName-compressed-i.json
@@ -55,6 +56,11 @@ class Parameters:
             if optionName == "--numbest":
                 index += 1
                 self.numBest = int(args[index])
+            if optionName == "--overlap":
+                index += 1
+                overlap_type = args[index]
+                if overlap_type in ["none", "vertex", "edge"]:
+                    self.overlap = overlap_type
             if optionName == "--prune":
                 self.prune = True
             if optionName == "--valuebased":
@@ -79,6 +85,7 @@ class Parameters:
         print("  Max Size: " + str(self.maxSize))
         print("  Min Size: " + str(self.minSize))
         print("  Num Best: " + str(self.numBest))
+        print("  Overlap: " + self.overlap)
         print("  Prune: " + str(self.prune))
         print("  Value Based: " + str(self.valueBased))
         print("  Write Compressed: " + str(self.writeCompressed))

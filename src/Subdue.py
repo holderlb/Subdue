@@ -28,7 +28,7 @@ def DiscoverPatterns(parameters, graph):
     """The main discovery loop. Finds and returns best patterns in given graph."""
     patternCount = 0
     # get initial one-edge patterns
-    parentPatternList = GetInitialPatterns(graph, parameters.temporal)
+    parentPatternList = GetInitialPatterns(parameters, graph)
     if DEBUGFLAG:
         print("Initial patterns (" + str(len(parentPatternList)) + "):")
         for pattern in parentPatternList:
@@ -42,7 +42,7 @@ def DiscoverPatterns(parameters, graph):
             parentPattern = parentPatternList.pop(0)
             if ((len(parentPattern.instances) > 1) and (patternCount < parameters.limit)):
                 patternCount += 1
-                extendedPatternList = Pattern.ExtendPattern(parentPattern, parameters.temporal)
+                extendedPatternList = Pattern.ExtendPattern(parameters, parentPattern)
                 while (extendedPatternList):
                     extendedPattern = extendedPatternList.pop(0)
                     if DEBUGFLAG:
@@ -66,15 +66,14 @@ def DiscoverPatterns(parameters, graph):
             Pattern.PatternListInsert(parentPattern, discoveredPatternList, parameters.numBest, False) # valueBased = False
     return discoveredPatternList
 
-def GetInitialPatterns(graph, temporal = False, overlap = True):
-    """Returns list of single-edge, evaluated patterns in given graph with more than one instance.
-    If overlap=False, then instances of a single-edge pattern cannot share vertices."""
+def GetInitialPatterns(parameters, graph):
+    """Returns list of single-edge, evaluated patterns in given graph with more than one instance."""
     initialPatternList = []
     # Create a graph and an instance for each edge
     edgeGraphInstancePairs = []
     for edge in graph.edges.values():
         graph1 = Graph.CreateGraphFromEdge(edge)
-        if temporal:
+        if parameters.temporal:
             graph1.TemporalOrder()
         instance1 = Pattern.CreateInstanceFromEdge(edge)
         edgeGraphInstancePairs.append((graph1,instance1))
@@ -89,7 +88,7 @@ def GetInitialPatterns(graph, temporal = False, overlap = True):
         for edgePair2 in edgeGraphInstancePairs:
             graph2 = edgePair2[0]
             instance2 = edgePair2[1]
-            if Graph.GraphMatch(graph1,graph2) and (overlap or (not Pattern.InstancesOverlap(pattern.instances,instance2))):
+            if Graph.GraphMatch(graph1,graph2) and (not Pattern.InstancesOverlap(parameters.overlap, pattern.instances, instance2)):
                 pattern.instances.append(instance2)
             else:
                 nonmatchingEdgePairs.append(edgePair2)
@@ -171,6 +170,7 @@ def nx_subdue(
     :param maxSize: (Default: 0)              -- Maximum size (#edges) of a pattern; default (0) is |E|/2.
     :param minSize: (Default: 1)              -- Minimum size (#edges) of a pattern; default is 1.
     :param numBest: (Default: 3)              -- Number of best patterns to report at end; default is 3.
+    :param overlap: (Defaul: none)            -- Extent that pattern instances can overlap (none, vertex, edge)
     :param prune: (Default: False)            -- Remove any patterns that are worse than their parent.
     :param valueBased: (Default: False)       -- Retain all patterns with the top beam best values.
     :param temporal: (Default: False)         -- Discover static (False) or temporal (True) patterns
@@ -223,7 +223,7 @@ def unwrap_output(iterations):
     return out
 
 def main():
-    print("SUBDUE v1.3 (python)\n")
+    print("SUBDUE v1.4 (python)\n")
     parameters = Parameters.Parameters()
     parameters.set_parameters(sys.argv)
     graph = ReadGraph(parameters.inputFileName)

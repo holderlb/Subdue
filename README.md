@@ -55,6 +55,10 @@ Minimum size (#edges) of a pattern. Default is 1.
 
 Number of best patterns to report at end. Default is 3.
 
+`--overlap <overlap_type>`
+
+Controls how instances of a pattern may overlap. Possible overlap_type values are: none, vertex, edge. Overlap of "none" means no part of two instances of a pattern can overlap. Overlap of "vertex" means that any number of vertices can overlap, but no edges. Overlap of "edge" means that edges and vertices can overlap, but the two instances cannot be identical. Default is "none".
+
 `--prune`
 
 If enabled, Subdue removes any pattern whose value is worse than its parent pattern. Disabled by default.
